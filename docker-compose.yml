@@ -1,0 +1,27 @@
+version: '2'
+services:
+  tinode:
+    image: tinode/tinode:0.16.8
+    volumes:
+      - "/etc/localtime:/rtc/localtime:ro"
+      - "./config:/etc/config"
+      - "/var/log:/var/log"
+    restart: always
+    ports:
+      - "6060:6060"
+      - "16060:16060"
+      - "12000-12003:12000-12003"
+    environment:
+      - "STORE_USE_ADAPTER=mongodb"
+    ## command: 
+
+  mongodb:
+    image: mongo:4.2.9
+    volumes:
+      - "/etc/localtime:/etc/localtime:ro"
+      - "/var/store/tinode-sample/mongodb/db:/data/db"
+    restart: always
+    ports:
+      - "27017:27017"
+    command: mongod --replSet rs0
+
